@@ -1,0 +1,177 @@
+   body, h1, h2, h3, h4, h5, h6, p {
+            padding:0;
+            margin: 0;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+        }
+        .fltrlt {
+            float:right;
+        }
+        .fltlft {
+            float:left;
+        }
+        .clear {
+            clear: both;
+        }
+        #sign_in_Head {
+            text-align: center;
+            padding: 5px;
+        }
+        #sign_in_H_Span {
+            padding: 1% 18%;
+            border-bottom: 1px solid orange;
+        }
+        #comCont {      
+        text-align: center;
+        margin: 40px 0 0;
+        color: dimgrey;
+        }
+        #comEleSpan {
+            font-size: 12px;
+
+        }
+        #sign_in_Body {
+            padding: 10px;
+            width: 70%;
+            margin: 14px auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+        }
+
+        #signIn {
+            margin: 16px;
+        }
+
+        label {
+            padding: 10px 0;
+            display: inline-block;
+            color: dimgrey;
+            font-size: 14px;
+        }
+        .passWordLabel {
+            margin-top:22px;
+        }
+        #mailInputCont {
+            padding: 5px;
+            border: 1px solid grey;
+            border-radius: 2px;
+            position: relative;
+        }
+        #pwdInputCont {
+            padding: 5px;
+            border: 1px solid grey;
+            border-radius: 2px;
+            position: relative;
+        }
+        #pwdInputCont div {
+            display: inline-block;
+            color: darkgray;
+        }
+        #pwdInputCont input {
+            border: none;
+            outline: none;
+            width: 80%;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        #mailInputCont div {
+            display: inline-block;
+            color: darkgray;
+        }
+
+        #mailInputCont input {
+            border: none;
+            outline: none;
+            width: 80%;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+
+        /* #sign_in_FormCont {
+            background: white;
+            border-color: darkgray;
+            border: 1px groove;
+            border-radius: 9px; 
+        } */
+        .formSub_div {
+            padding: 5px;
+            margin: 25px 0;
+            box-shadow: inset 0 -1px 0 0 rgba(100,121,143,0.122);
+        }
+       
+        #mail_Div {
+        border: 1px solid gray;
+        margin: 0 5px;
+        border-radius: 2px;
+        }
+        #mail_Div input {
+            border: none;
+            outline: none;
+            margin-left: 1em;
+            width: 92%
+        }
+        #mail_icon_cont {
+            display: inline-block;
+            color: lightgray; 
+        }
+        #pwd_Intial, #pwd_Confirm {
+            display: inline-block;
+            border: 1px solid gray;
+            padding: 6px;
+            width: 45%;
+            border-radius: 2px;
+        }
+        #pwd_Confirm {
+            float: right;
+            padding-top: 6.5px 
+        }
+        #pwd_Intial  div {
+            display: inline-block;
+            color: lightgray;
+        }
+        #pwd_Intial input {
+            margin-left: 4%
+        }
+        #pwd_Intial {
+            width: 49%;
+            border-right: transparent;
+        }
+        #pwd_Intial input, #pwd_Confirm input  {
+            border: none;
+            outline: none;
+            width: 80%;
+        }
+        #sign_inLinkCont {
+            padding: 10px;
+            text-align: center;
+        }
+        #sign_In_Link {
+            color: white;
+            margin: 0 auto;
+            width: 20%;
+            padding: 8px 14px;
+            display: block;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            background: rgb(255, 162, 48);
+        }
+        
+        #sign_In_Link:hover {    
+            background: darkorange;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+        }
+        #forGotText:hover {
+            color: red;
+            padding: 2px;
+            
+        }
+        #forGotText {
+            font-size: 12px;
+            padding: 2px;
+            color: gray;
+            cursor: pointer;
+            margin-top: 8px;
+            display: inline-block;
+        }
