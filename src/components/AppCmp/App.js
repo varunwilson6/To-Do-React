@@ -51,6 +51,11 @@ class App extends Component {
     console.log("signInValidation:",state)
   }
 
+  signUpValidation = (state) => {
+
+    console.log("signInValidation:",state)
+  }
+
 
   render() {
     return (
@@ -58,7 +63,7 @@ class App extends Component {
         <HeadCmp pageState={this.state.whichpage} activePage={this.activePage} />
         <AppHolderCmp >
           {this.state.whichpage === 'SignIn' ? <Signin signInValidation = {this.signInValidation} loginTrue = {this.loginTrue} /> : null}
-          {this.state.whichpage === 'SignUp' ? <Signup /> : null}
+          {this.state.whichpage === 'SignUp' ? <Signup signUpValidation = {this.signUpValidation} /> : null}
           {this.state.whichpage === 'UserPg' ? <div><DateViewCmp dateData = {this.state.dateSession} /><TskAdgCmp /><TopAddCmp /><SvgContCmp /><AllClrBaseCmp /></div> : null}
         </AppHolderCmp>
 

@@ -87,12 +87,8 @@ const TskAdgCmp = (props) => {
         </div>
     )
 }
-const FieldShouldCmp = () => {
-    return(
-        <span className="maTrySpan" >* This Field is mandatory</span>
-        )
-}
 
 
-export default FieldShouldCmp;
+
+
 export { TopAddCmp, SvgContCmp, AllClrBaseCmp, TskAdgCmp, DateViewCmp};

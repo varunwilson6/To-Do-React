@@ -13,4 +13,16 @@ const ValidEmail = () => {
     )
 }
 
-export {FieldShouldCmp , ValidEmail};
+const InvalidPwd = () => {
+    return(
+        <span className="maTrySpan" >Password should contain numbers and min 8 characters</span>
+    )
+}
+
+const PwdNotMatch = () => {
+    return(
+        <span className="maTrySpan" >Password is not matching</span>
+    )
+}
+
+export {FieldShouldCmp , ValidEmail, InvalidPwd, PwdNotMatch};
