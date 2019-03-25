@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 import Signin from '../signInPgCmp/cmpSignIn';
 import Signup from '../signUpCmp/cmpSignUp';
@@ -46,16 +47,42 @@ class App extends Component {
     localStorage.setItem('to-do-Page', 'UserPg')
   }
 
+  passVerify = (response) => {
+    console.log(response.data);
+    let rcvData =  response.data;
+    let usrkey = (Object.keys(rcvData));
+    let userPwd = this.state.signIn_Password
+    let key = usrkey[0]
+    console.log(rcvData[key].password);
+    if(rcvData[key].password == this.state.signIn_Password) {
+      console.log('Ok');
+      this.loginTrue();
+    }
+  }
+
   signInValidation = (state) => {
-    
-    console.log("signInValidation:",state)
+    // Storing the user credintials to App state
+   // console.log("signInValidation:",state)
+    this.setState({
+      signIn_Email:state.signIn_Email
+    });
+    this.setState({
+      signIn_Password:state.signIn_Password
+    });
+     let userMailid = state.signIn_Email;
+    const axios =require('axios');
+    console.log(userMailid)
+    axios.get(`https://p1-to-do.firebaseio.com/users.json?orderBy="mail"&equalTo="${userMailid}"`).then((response)=>{
+      this.passVerify(response)
+  }).catch((error)=>{
+      console.log(error)
+    })
   }
 
   signUpValidation = (state) => {
 
     console.log("signInValidation:",state)
   }
-
 
   render() {
     return (
