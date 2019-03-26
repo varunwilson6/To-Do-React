@@ -21,7 +21,7 @@ class DateViewCmp extends Component {
                 {/* The login below is - an Object is with Array of Weekly Days, Mondays and a new Date object
                 is passed throught the props and retrived it with UTC appiled to the New Date object of the props  */}
                 <span className="inBoxspan" id="to">{this.props.dateData.days[this.props.dateData.date.getDay()]}</span>
-                <span className="inBoxspan" id="toDate">{this.props.dateData.date.getUTCDate()}</span>
+                <span className="inBoxspan" id="toDate">{this.props.dateData.date.getDate()}</span>
                 <span className="inBoxspan" id="toMonth">{this.props.dateData.months[this.props.dateData.date.getMonth()]}</span>
             </div>
         </div>

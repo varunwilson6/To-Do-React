@@ -6,6 +6,8 @@ import Signup from '../signUpCmp/cmpSignUp';
 import { TopAddCmp, SvgContCmp, AllClrBaseCmp, TskAdgCmp, DateViewCmp } from '../userPgCmp/cmpUserPg';
 import HeadCmp from '../headCmp/cmpHead'
 import AppHolderCmp from '../appHolderCmp/cmpAppCont'
+import UserCreated from '../packCmp/cmpPack'
+import { stat } from 'fs';
 
 
 
@@ -38,7 +40,11 @@ class App extends Component {
     } else if(this.state.whichpage === 'UserPg') {
       localStorage.removeItem('to-do-Page');
       sessionStorage.removeItem('to-do-Page', 'UserPg')
-      this.setState({ whichpage: 'SignIn'})}
+      this.setState({ whichpage: 'SignIn'})
+    }else if(this.state.whichpage === 'signUpSuc') {
+      this.setState({whichpage: 'SignIn'})
+      sessionStorage.setItem('to-do-Page', 'SignIn')
+    }
   }
 
   loginTrue = () => {
@@ -61,37 +67,83 @@ class App extends Component {
   }
 
   signInValidation = (state) => {
-    // Storing the user credintials to App state
-   // console.log("signInValidation:",state)
+
+  let Sendobject = {
+    email:state.signIn_Email,
+    password:state.signIn_Password,
+    returnSecureToken: true,
+    //fName:
+  }
+
+  axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, Sendobject)
+  .then(response => {
+    console.log(response);
+    sessionStorage.setItem('to-do-Page', 'UserPg')
+    localStorage.setItem('to-do-Page', 'UserPg')
     this.setState({
-      signIn_Email:state.signIn_Email
+      whichpage:'UserPg',
+      signedMail:response.data.email
     });
+    
+    
+    // axios.post(`https://p1-to-do.firebaseio.com/to-do.json?auth=${response.data.idToken}&orderBy="email"&equalTo="${response.data.email}"`)
+    //  .then(response => console.log(response)).catch(err => console.log("err in Rettive data"))
+  }).catch(err => {
+
+    console.log(err.response)
     this.setState({
-      signIn_Password:state.signIn_Password
-    });
-     let userMailid = state.signIn_Email;
-    const axios =require('axios');
-    console.log(userMailid)
-    axios.get(`https://p1-to-do.firebaseio.com/users.json?orderBy="mail"&equalTo="${userMailid}"`).then((response)=>{
-      this.passVerify(response)
-  }).catch((error)=>{
-      console.log(error)
+      signInPass:'Failed'
+    })
+  });
+
+  }
+
+  stateChange =() => {
+    this.setState({
+      signInPass:null
+    })
+  }
+
+  signInPass =() => {
+    this.setState({
+      signInPass:null
     })
   }
 
   signUpValidation = (state) => {
 
     console.log("signInValidation:",state)
+
+      let smObj = {
+          email:state.signUp_Email,
+          password:state.signUp_IntPassword,
+          returnSecureToken: true,
+          fName:state.userFName,
+          lName:state.userLName,
+
+      }
+      axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, smObj)
+      .then(response => {
+          console.log(response);
+          if(response.status == 200) {
+            this.setState({
+              whichpage:'signUpSuc',
+              lgnSucRes:response,
+            });
+          } 
+      }).catch(err => {console.log(err.response)})
+
   }
 
   render() {
     return (
       <div className='container'>
         <HeadCmp pageState={this.state.whichpage} activePage={this.activePage} />
-        <AppHolderCmp >
-          {this.state.whichpage === 'SignIn' ? <Signin signInValidation = {this.signInValidation} loginTrue = {this.loginTrue} /> : null}
-          {this.state.whichpage === 'SignUp' ? <Signup signUpValidation = {this.signUpValidation} /> : null}
+        <AppHolderCmp signedMail = {this.state.signedMail} >
+          {this.state.whichpage === 'SignIn' ? <Signin appStateRes={this.state.response} stateChange={this.stateChange} signStatus={this.state.signInPass}  signInValidation = {this.signInValidation} loginTrue = {this.loginTrue}/> : null}
+          {this.state.whichpage === 'SignUp' ? <Signup activePage={this.activePage} signUpValidation = {this.signUpValidation} /> : null}
           {this.state.whichpage === 'UserPg' ? <div><DateViewCmp dateData = {this.state.dateSession} /><TskAdgCmp /><TopAddCmp /><SvgContCmp /><AllClrBaseCmp /></div> : null}
+          {this.state.whichpage === 'signUpSuc' ? <UserCreated/>:null}
         </AppHolderCmp>
 
       </div>

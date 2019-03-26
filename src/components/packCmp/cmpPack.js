@@ -1,9 +1,9 @@
 import React from 'react';
 import './cmpPack.css'
 
-const FieldShouldCmp = () => {
+const ErrorCmp = (props) => {
     return(
-        <span className="maTrySpan" >* This Field is mandatory</span>
+        <span className="maTrySpan" >{props.innerText}</span>
         )
 }
 
@@ -19,10 +19,20 @@ const InvalidPwd = () => {
     )
 }
 
-const PwdNotMatch = () => {
+const PwdNotMatch = (props) => {
     return(
-        <span className="maTrySpan" >Password is not matching</span>
+        <span className="maTrySpan" >{props.innerText}</span>
     )
 }
 
-export {FieldShouldCmp , ValidEmail, InvalidPwd, PwdNotMatch};
+
+const UserCreated = (props) => {
+    return(
+        <div id="UserCreatedDiv">
+        <span className="UserCr" >Congrats</span>
+        <span className="UserSc" >Hi, Your Account has been successfully created</span>
+        </div>
+    )
+}
+export default UserCreated
+export {ErrorCmp};

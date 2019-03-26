@@ -6,3 +6,19 @@
     font-size: 12px;
     color: red;
     }
+
+#UserCreatedDiv{
+    text-align:center;
+}
+.UserCr {
+    display: inline-block;
+    font-size: 25px;
+    margin-bottom: 15px;
+    color: green;
+    border-bottom: .5px solid grey;
+    padding: 0 70px 6px;
+}
+
+.UserSc {
+    display: block;
+}

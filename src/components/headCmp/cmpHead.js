@@ -15,7 +15,7 @@ class HeadCmp extends Component {
 
         if(this.props.pageState==='SignIn') {
             innerTxt = 'Sign Up'
-        } else if (this.props.pageState==='SignUp') {
+        } else if (this.props.pageState==='SignUp' || this.props.pageState==='signUpSuc') {
             innerTxt = 'Sign In'
         } else {innerTxt = 'Logout'}
 
