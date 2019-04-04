@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './sign_inPage.css';
-import {ErrorCmp} from '../packCmp/cmpPack'
+import {ErrorCmp} from '../packCmp/cmpPack';
+import axios from 'axios';
+import loadingPic from './loadingPic.gif';
 
 class Signin extends Component {
     constructor(props) {
@@ -9,24 +11,61 @@ class Signin extends Component {
             signIn_Email: "",
             signIn_Password: null,
             emailValid:false,
+
             signStatus:this.props.signStatus,
+            loading:false,
         }
         // this.props.signInValidation.bind(this);
     }
 
-    localSignInValidation = () => {
-        this.props.signInValidation({
-            ...this.state
-        });
+    //statePass =()
 
-    }
+    signInValidation = (state) => {
+        this.setState({
+            loading:true
+        })
+        let Sendobject = {
+          email:this.state.signIn_Email,
+          password:this.state.signIn_Password,
+          returnSecureToken: true,
+        }
+      
+        axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, Sendobject)
+        .then(response => {
+          console.log(response);
+          this.setState({
+            loading:false
+          })
+          sessionStorage.setItem('to-do-Page', 'UserPg');
+          localStorage.setItem('to-do-Page', 'UserPg');
+          localStorage.setItem('signedMail',response.data.email);
+          localStorage.setItem('authToken',response.data.idToken);
+
+        //   this.setState({
+        //     whichpage:'UserPg',
+        //     signedMail:response.data.email
+        //   });
+          
+          this.props.userPageEntery();
+          // axios.post(`https://p1-to-do.firebaseio.com/to-do.json?auth=${response.data.idToken}&orderBy="email"&equalTo="${response.data.email}"`)
+          //  .then(response => console.log(response)).catch(err => console.log("err in Rettive data"))
+        }).catch(err => {
+      
+          console.log(err.response)
+          this.setState({
+            signInPass:'Failed',
+            loading:false
+          })
+        });
+      
+        }
 
     innerTxt =() => {
 
         let txt = null
         if(!this.state.signIn_Password) {
             txt = "* This Field is Mandatory" 
-        } else if (this.props.signStatus==="Failed"&&!this.state.check) {
+        } else if (this.state.signInPass==="Failed"&&!this.state.check) {
             txt = "Password or E-Mail is wrong" } else if(this.state.check) txt = null       
             return txt;
     }
@@ -34,7 +73,7 @@ class Signin extends Component {
     storingInputs = (event) => {
         let check,emailValid,signIn_Email,signIn_Password;
        // console.log(this.props.signStatus)
-        if(this.props.signStatus==="Failed"){
+        if(this.state.signInPass==="Failed"){
             check=true;
             this.props.stateChange();
           //  this.setState({check:true})
@@ -85,6 +124,9 @@ class Signin extends Component {
                         <span id='sign_in_H_Span'>
                             Login Here
                     </span>
+                    <div id = 'LoadingCont'>
+                      {this.state.loading?<img className = 'LoadImgsgn'  src = {loadingPic} width = '42px' alt = 'loadingpic'/>:null}
+                    </div>
                     </div>
                     <div id='comCont'>
                         <span id='comEleSpan'>Please fill the Login Details</span>
@@ -108,7 +150,7 @@ class Signin extends Component {
                         </div>
                     </div>
                     <div id="sign_inLinkCont">
-                        <a onClick={this.state.emailValid&&this.state.signIn_Password?this.localSignInValidation:null} id="sign_In_Link">Login</a>
+                        <a onClick={this.state.emailValid&&this.state.signIn_Password?this.signInValidation:null} id="sign_In_Link">Login</a>
                         <span id="forGotText">Forgot Password</span>
                     </div>
                 </div>

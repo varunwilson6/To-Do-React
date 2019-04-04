@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import './App.css';
 import Signin from '../signInPgCmp/cmpSignIn';
 import Signup from '../signUpCmp/cmpSignUp';
-import { TopAddCmp, SvgContCmp, AllClrBaseCmp, TskAdgCmp, DateViewCmp } from '../userPgCmp/cmpUserPg';
-import HeadCmp from '../headCmp/cmpHead'
-import AppHolderCmp from '../appHolderCmp/cmpAppCont'
-import UserCreated from '../packCmp/cmpPack'
-import { stat } from 'fs';
+import { UserpageCmp } from '../userPgCmp/cmpUserPg';
+import HeadCmp from '../headCmp/cmpHead';
+import AppHolderCmp from '../appHolderCmp/cmpAppCont';
+import UserCreated from '../packCmp/cmpPack';
+
 
 
 
@@ -66,36 +67,10 @@ class App extends Component {
     }
   }
 
-  signInValidation = (state) => {
-
-  let Sendobject = {
-    email:state.signIn_Email,
-    password:state.signIn_Password,
-    returnSecureToken: true,
-    //fName:
-  }
-
-  axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, Sendobject)
-  .then(response => {
-    console.log(response);
-    sessionStorage.setItem('to-do-Page', 'UserPg')
-    localStorage.setItem('to-do-Page', 'UserPg')
+  userPageEntery = () => {
     this.setState({
-      whichpage:'UserPg',
-      signedMail:response.data.email
-    });
-    
-    
-    // axios.post(`https://p1-to-do.firebaseio.com/to-do.json?auth=${response.data.idToken}&orderBy="email"&equalTo="${response.data.email}"`)
-    //  .then(response => console.log(response)).catch(err => console.log("err in Rettive data"))
-  }).catch(err => {
-
-    console.log(err.response)
-    this.setState({
-      signInPass:'Failed'
+      whichpage:'UserPg'
     })
-  });
-
   }
 
   stateChange =() => {
@@ -137,19 +112,28 @@ class App extends Component {
 
   render() {
     return (
+      <BrowserRouter>
       <div className='container'>
         <HeadCmp pageState={this.state.whichpage} activePage={this.activePage} />
-        <AppHolderCmp signedMail = {this.state.signedMail} >
-          {this.state.whichpage === 'SignIn' ? <Signin appStateRes={this.state.response} stateChange={this.stateChange} signStatus={this.state.signInPass}  signInValidation = {this.signInValidation} loginTrue = {this.loginTrue}/> : null}
+        <AppHolderCmp >
+          <Switch>
+          {this.state.whichpage === 'SignIn' ? <Signin appStateRes={this.state.response} 
+          stateChange={this.stateChange} 
+          signStatus={this.state.signInPass}
+          userPageEntery = {this.userPageEntery}  
+          signInValidation = {this.signInValidation} 
+          loginTrue = {this.loginTrue}/> : null}
           {this.state.whichpage === 'SignUp' ? <Signup activePage={this.activePage} signUpValidation = {this.signUpValidation} /> : null}
-          {this.state.whichpage === 'UserPg' ? <div><DateViewCmp dateData = {this.state.dateSession} /><TskAdgCmp /><TopAddCmp /><SvgContCmp /><AllClrBaseCmp /></div> : null}
+          {this.state.whichpage === 'UserPg' ? <UserpageCmp dateData = {this.state.dateSession} /> : null}
           {this.state.whichpage === 'signUpSuc' ? <UserCreated/>:null}
+          </Switch>
         </AppHolderCmp>
-
       </div>
-
+      </BrowserRouter>
     );
   }
 }
 
 export default App;
+
+

@@ -64,6 +64,57 @@ body, h1, h2, h3, h4, h5, h6, p {
     width: 260px;
     margin: 0px auto;
 }
+.taskDate {
+    float: right;
+    border-left: 1px solid red;
+    padding: 0 8px; 
+}
+.TaskCont {
+    padding: 3px;
+    border: 2px solid orange;
+    margin: 10px 0;
+    border-width: 1px 2px 0 2px;
+    border-radius: 12px;
+}
+
+.inputCont {
+    padding: 2px;
+    border: 1px solid rgb(172, 172, 172);
+    
+    border-radius: 2px;
+}
+
+.totalInAddCont {
+    margin: 0 15px;
+}
+.normalBut {
+    padding: 0px 8px;
+    margin-top: 10px;
+    margin-right: 8px;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: rgb(192, 192, 192) 0px 1px 1px;
+    cursor: pointer;   
+}
+.normalBut:hover {
+    background-image: linear-gradient(#e2ffdb, white);
+    box-shadow: rgb(136, 136, 136) 0px 2px 1px;
+}
+.inputCont input {
+    border:none;
+    outline: none;
+    width: 80%;
+    padding: 6px;
+    margin-left: 4px;
+}
+
+#mainLoading img {
+    margin: 0 auto;
+    display: inherit;
+}
+
 .viwPadCenBase {
     text-align: center;
 }

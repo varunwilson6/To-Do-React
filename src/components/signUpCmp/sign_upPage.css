@@ -20,10 +20,16 @@
             padding: 1% 18%;
             border-bottom: 1px solid orange;
         }
+        #LoadingCont {
+            position: absolute;
+            top: -38px;
+
+        }
         #comCont {      
         text-align: center;
         margin: 40px 0 0;
         color: dimgrey;
+        position: relative;
         }
         #comEleSpan {
             font-size: 12px;

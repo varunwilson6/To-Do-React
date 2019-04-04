@@ -15,11 +15,18 @@
         #sign_in_Head {
             text-align: center;
             padding: 5px;
+            position: relative;
         }
         #sign_in_H_Span {
             padding: 1% 18%;
             border-bottom: 1px solid orange;
         }
+        #LoadingCont {
+            position: absolute;
+            left: 317px;
+            top: 30px;
+        }
+
         #comCont {      
         text-align: center;
         margin: 40px 0 0;

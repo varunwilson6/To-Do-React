@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios'
 import './sign_upPage.css'
 import {ErrorCmp , ValidEmail, InvalidPwd, PwdNotMatch} from '../packCmp/cmpPack'
+import loadingPic from './loadingPic.gif';
 
 class Signup extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class Signup extends Component {
             IntPasswordStatus:false,
             signUp_CnfPassword:null,
             CnfPasswordStatus:false,
-
+            loading:false,
         }
     }
 
@@ -49,6 +50,9 @@ class Signup extends Component {
     accountCreation = () => {
         let lc = this.state
         if(lc.CnfPasswordStatus&&lc.emailValid&&lc.userLName&&lc.userFName&&!this.state.mailUniqe){
+        this.setState({
+            loading:true,
+        })
         this.props.signUpValidation({
             ...this.state
         })
@@ -114,7 +118,11 @@ class Signup extends Component {
             <div id="sign_up_Head">
                 <span id="sign_up_H_Span">Sign-Up</span>
             </div>
+           
             <div id="comCont">
+            <div id = 'LoadingCont'>
+                {this.state.loading?<img className = 'LoadImgsgn'  src = {loadingPic} width = '42px' alt = 'loadingpic'/>:null}
+              </div>
                 <span id="comEleSpan">Please fill the below Details</span>
             </div>
             <div id="sign_up_Body">
