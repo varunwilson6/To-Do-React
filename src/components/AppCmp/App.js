@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter} from 'react-router-dom';
 import './App.css';
 import Signin from '../signInPgCmp/cmpSignIn';
 import Signup from '../signUpCmp/cmpSignUp';
@@ -115,8 +115,7 @@ class App extends Component {
       <BrowserRouter>
       <div className='container'>
         <HeadCmp pageState={this.state.whichpage} activePage={this.activePage} />
-        <AppHolderCmp >
-          <Switch>
+        <AppHolderCmp signedMail = {this.state.signedMail} >
           {this.state.whichpage === 'SignIn' ? <Signin appStateRes={this.state.response} 
           stateChange={this.stateChange} 
           signStatus={this.state.signInPass}
@@ -126,7 +125,6 @@ class App extends Component {
           {this.state.whichpage === 'SignUp' ? <Signup activePage={this.activePage} signUpValidation = {this.signUpValidation} /> : null}
           {this.state.whichpage === 'UserPg' ? <UserpageCmp dateData = {this.state.dateSession} /> : null}
           {this.state.whichpage === 'signUpSuc' ? <UserCreated/>:null}
-          </Switch>
         </AppHolderCmp>
       </div>
       </BrowserRouter>

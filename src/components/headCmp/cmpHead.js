@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import cmpLogo from './cmpLogo.svg';
 import './headCmp.css';
+import { NavLink } from 'react-router-dom'
 
 
 // Header Component - for common head for all pages

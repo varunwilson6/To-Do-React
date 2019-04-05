@@ -102,12 +102,18 @@ body, h1, h2, h3, h4, h5, h6, p {
     background-image: linear-gradient(#e2ffdb, white);
     box-shadow: rgb(136, 136, 136) 0px 2px 1px;
 }
-.inputCont input {
+.inputCont input[id="addTskInput"] {
     border:none;
     outline: none;
-    width: 80%;
+    width: 73%;
     padding: 6px;
     margin-left: 4px;
+}
+
+#DateAdder {
+    border: none;
+    border-radius:8px;
+    outline: none;
 }
 
 #mainLoading img {

@@ -19,6 +19,9 @@ class Signin extends Component {
     }
 
     //statePass =()
+    keyPressHandler = (event) => {
+        if(event.which==13)this.signInValidation()
+    }
 
     signInValidation = (state) => {
         this.setState({
@@ -137,20 +140,22 @@ class Signin extends Component {
                                 <label htmlFor="mailInput">Enter your registered Mail-Id</label>
                                 <div id="mailInputCont">
                                     <div><i className="fas fa-at"></i></div>
-                                    <input type="text" name="email_SignIn" placeholder="Type your Mail-Id here,.." onChange={this.storingInputs} />
+                                    <input onKeyPress={this.state.emailValid&&this.state.signIn_Password?this.keyPressHandler:null} type="text" name="email_SignIn" placeholder="Type your Mail-Id here,.." onChange={this.storingInputs} />
                                     {this.state.signIn_Email?null:<ErrorCmp innerText = "* This Field is Mandatory"/>}{this.state.signIn_Email!=false?(!this.state.emailValid?<ErrorCmp innerText = "Enter a Valid E-Mail"/>:null):null}
                                 </div>
                                 <label className='passWordLabel' htmlFor="mailInput" >Enter your Password</label>
                                 <div id="pwdInputCont">
                                     <div><i className="fas fa-unlock-alt"></i></div>
-                                    <input type="password" name="password_SignIn" placeholder="Type your password here" onChange={this.storingInputs} />
+                                    <input onKeyPress={this.state.emailValid&&this.state.signIn_Password?this.keyPressHandler:null} type="password" name="password_SignIn" placeholder="Type your password here" onChange={this.storingInputs} />
                                     {<ErrorCmp innerText = {this.innerTxt()}/>}
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div id="sign_inLinkCont">
-                        <a onClick={this.state.emailValid&&this.state.signIn_Password?this.signInValidation:null} id="sign_In_Link">Login</a>
+                        <a 
+                        onClick={this.state.emailValid&&this.state.signIn_Password?this.signInValidation:null} 
+                        id="sign_In_Link">Login</a>
                         <span id="forGotText">Forgot Password</span>
                     </div>
                 </div>

@@ -102,7 +102,10 @@ class TaskAddingInputCmp extends Component {
     constructor() {
         super();
     this.state = {
-        inValue:""
+        inValue:"",
+        dateValue:new Date().getFullYear()+"-"+
+        ("0"+(new Date().getMonth())).slice(-2)+
+        "-"+("0"+(new Date().getDate())).slice(-2),
     }
     }
 
@@ -120,10 +123,20 @@ class TaskAddingInputCmp extends Component {
         })
     }
 
+    dateValueHandler = (event) => {
+        console.log(event.target.value)
+        this.setState({
+            dateValue:event.target.value,
+        })
+    }
+
     dataTrasfer = () => {
         this.props.taskSending({...this.state});
         this.setState({
             inValue:"",
+            dateValue:new Date().getFullYear()+"-"+
+        ("0"+(new Date().getMonth())).slice(-2)+
+        "-"+("0"+(new Date().getDate())).slice(-2),
         })
     }
 
@@ -132,7 +145,7 @@ class TaskAddingInputCmp extends Component {
         <div className = "totalInAddCont">
             <div className = "inputCont">
             <input id = "addTskInput" placeholder = 'e.g. Buy gift tomorrow at 6pm p1 #Errands' onKeyPress = {this.enterCheck}  onChange = {this.valueStore} value = {this.state.inValue}></input>
-            <span>{new Date().toLocaleDateString()}</span>
+            <span><input id = "DateAdder" value = {this.state.dateValue} onChange = {this.dateValueHandler} type="date" name="Due_Date"/></span>
             </div>
             <button onClick = {this.state.inValue.trim()?this.dataTrasfer:null} className = "normalBut" >Add Task</button><button className = "normalBut" onClick = {this.props.inputCrDeletion}>Cancel</button>
         </div>
@@ -154,7 +167,6 @@ class TskAdgCmp extends Component {
 
     ValueStore = (event) => {
         let values = event.target.value
-        let valueId= event.target.id
         this.setState({
             valueId:values
         })
@@ -276,14 +288,25 @@ class UserpageCmp extends Component {
         })
     }
 
+    dateHandler =(state) => {
+        
+        let datevl = state.dateValue
+        console.log(datevl);
+        let day = datevl.split("-")[2],
+        month = datevl.split("-")[1],
+        year = datevl.split("-")[0]
+         var d = new Date ( year, month, day);
+         return d.toDateString()
+    }
+
     taskSending = (state) => { //Here the task is sending to firebase
         this.setState({
             tskAdgLoading:true, //mini loading state, For setting loading while adding a task
         })
         const value = state.inValue;
-        const Due_date = state.dueDate?state.dueDate:new Date().toDateString();
+        const Due_date = this.dateHandler(state);
         const signedEmail = localStorage.getItem('signedMail');
-        const authToken = localStorage.getItem('authToken')
+        const authToken = localStorage.getItem('authToken');
         const sendObject = {
             Date:Due_date,
             Task:value,
