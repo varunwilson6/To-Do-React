@@ -35,6 +35,7 @@ class HeadCmp extends Component {
                     </div>
                     <div className = 'loginDiv'>
                         <button onClick = {this.props.activePage} className = 'log_Out'>{this.btStatus()}</button>
+                        {this.props.UserName?<span className = "userNameDisplayer">{this.props.UserName}</span>:null} 
                     </div>
                     <div className = 'clear'></div>
                 </div>

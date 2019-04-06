@@ -37,6 +37,21 @@ body, h1, h2, h3, h4, h5, h6, p {
     padding-left: 12px;
     color: white;
 }
+
+.userNameDisplayer {
+    padding: 2px 8px;
+    position: absolute;
+    top: 13px;
+    right: 25px;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.userNameDisplayer:hover {
+    box-shadow: 0 0 5px 2px;
+}
+
 .log_Out {
     float: right;
     width: 80px;

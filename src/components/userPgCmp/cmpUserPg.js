@@ -65,7 +65,7 @@ const AllClrBaseCmp = (props) => {
         <div className = 'viwPadCenBase'>
             <div className = 'allClr'>All Clear</div>
             <div className = 'lookDiv'>Looks like everything's organized in the right place.</div>
-            <div className = 'addTaskBtCont'><button>Add Task</button></div>
+            <div className = 'addTaskBtCont'><button onClick = {props.inputCr}>Add Task</button></div>
             <div className = 'viwPaBaACont'>
                 <a>
                     <span className = 'svgspan2'>
@@ -257,11 +257,26 @@ class UserpageCmp extends Component {
         
     }
 
+    displayerHandler = (res) => {
+        this.props.userNameDsp(res)
+    }
+
+    userDetailsRetriveHandler = (authToken, signedMailid) => {
+        axios.get(`https://p1-to-do.firebaseio.com/users.json?auth=${authToken}&orderBy="userMail"&equalTo="${signedMailid}"`)
+        .then( res => {
+            console.log(res)
+            this. displayerHandler(res)
+        })
+    }
+
     dataRetrivingHandler =()=> {
         
         let authToken = localStorage.getItem('authToken');
         let signedMailid = localStorage.getItem('signedMail');
-        axios.get(`https://p1-to-do.firebaseio.com/to-do.json?auth=${authToken}&'orderBy'=email&'equalTo'=${signedMailid}`)
+
+        this.userDetailsRetriveHandler(authToken, signedMailid); // retriving user name
+        
+        axios.get(`https://p1-to-do.firebaseio.com/to-do.json?auth=${authToken}&orderBy="email"&equalTo="${signedMailid}"`)
         .then((response)=> {
 
             if(this.state.tskAdgLoading) {
@@ -345,9 +360,9 @@ class UserpageCmp extends Component {
                     <TaskAddingInputCmp
                     taskSending = {this.taskSending}
                     inputCrDeletion = {this.taskAddInHandler}/>:<TopAddCmp 
-                    inputCr = {this.taskAddInHandler}/>}
-                {this.state.loading||this.state.tickingLoading?<LoadingCmp/>:(this.state.responseData?null:<SvgContCmp />)}
-                {this.state.loading?null:(this.state.responseData?null:<AllClrBaseCmp />)}
+                    inputCr = {this.taskAddInHandler}/>} {/* The below operation is to show the loading function and after loading to display the all clear SVG if no tasks presents */}
+                {this.state.loading||this.state.tickingLoading?<LoadingCmp/>:(Object.keys(this.state.responseData).length===0&&this.state.responseData.constructor===Object&&!this.state.DisplyTskAddingInput?<SvgContCmp />:null)}
+                {this.state.loading?null:(Object.keys(this.state.responseData).length===0&&this.state.responseData.constructor===Object&&!this.state.DisplyTskAddingInput?<AllClrBaseCmp inputCr = {this.taskAddInHandler} />:null)}
                 </div>
         )
     }
