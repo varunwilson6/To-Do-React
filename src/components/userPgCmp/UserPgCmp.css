@@ -60,6 +60,10 @@ body, h1, h2, h3, h4, h5, h6, p {
     color: rgb(128, 128, 128);
     margin-right: 12px;
 }
+.spanAdd:hover {
+    text-shadow: 1px 2px 5px;
+}
+
 .svgContDiv {
     width: 260px;
     margin: 0px auto;
@@ -144,7 +148,19 @@ body, h1, h2, h3, h4, h5, h6, p {
     border-radius: 3px;
     color: white;
     cursor: pointer;
+    outline: none;
 }
+
+.addTaskBtCont button:hover {
+    font-weight: bold;
+    text-decoration: underline;
+    background: none;
+    color: #ff9000;
+    box-shadow: #333;
+    text-shadow: 1px 2px 5px;
+    
+}
+
 .viwPaBaACont {
     margin-top: 10px;
 }

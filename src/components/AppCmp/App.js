@@ -18,11 +18,6 @@ class App extends Component {
     this.state = { // Here if their is any item stored in session storage - 'to-do-Page', it will
     // set as state else if any local storage, it set as state else state will set as 'signIn'
       whichpage: sessionStorage.getItem('to-do-Page')?sessionStorage.getItem('to-do-Page') : (localStorage.getItem('to-do-Page')?localStorage.getItem('to-do-Page'):'SignIn'),
-      dateSession: {
-                    date: new Date(),
-                    days:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-                    months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Nov','Dec']
-                  },
       signIn_Email:null,
       signIn_Password:null,
     }
@@ -154,7 +149,7 @@ class App extends Component {
           signInValidation = {this.signInValidation} 
           loginTrue = {this.loginTrue}/> : null}
           {this.state.whichpage === 'SignUp' ? <Signup activePage={this.activePage} signUpValidation = {this.signUpValidation} /> : null}
-          {this.state.whichpage === 'UserPg' ? <UserpageCmp userNameDsp = {this.userNameDisplayerHandler} dateData = {this.state.dateSession} /> : null}
+          {this.state.whichpage === 'UserPg' ? <UserpageCmp userNameDsp = {this.userNameDisplayerHandler} /> : null}
           {this.state.whichpage === 'signUpSuc' ? <UserCreated/>:null}
         </AppHolderCmp>
       </div>

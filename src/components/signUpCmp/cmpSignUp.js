@@ -36,8 +36,6 @@ class Signup extends Component {
             axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, smObj)
             .then(response => {
               console.log(response);
-              this.userNameRegisterHandler(response)
-              
               // axios.post(`https://p1-to-do.firebaseio.com/to-do.json?auth=${response.data.idToken}&orderBy="email"&equalTo="${response.data.email}"`)
               //  .then(response => console.log(response)).catch(err => console.log("err in Rettive data"))
             }).catch(err => {
