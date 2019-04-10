@@ -19,9 +19,9 @@ body, h1, h2, h3, h4, h5, h6, p {
     box-shadow: 0 1px 2px rgba(0,0,0,0.15); 
 }
 .headElement {
-    width: 72%;
-    margin: 0 0px 0 214px;
-    padding-top:8px;
+    width: 82%;
+    margin: 0 0px 0 200px;
+    padding-top: 8px;
 }
 .svgCont {
     width: 80%;
@@ -38,22 +38,53 @@ body, h1, h2, h3, h4, h5, h6, p {
     color: white;
 }
 
+.selected {
+    opacity: 0.5;
+    cursor: default;
+}
+.loginDiv {
+    float: right;
+    margin-top: 2px;
+    width: 100%;
+    display: inline-block;
+}
+
+.signup_signIn {
+    float: right;
+    margin-top: 4px;
+}
+
+.signNav {
+    text-decoration: none;
+    padding: 2px 4px;
+    color: white;
+    border-radius: 18px;
+    width: 68px;
+    margin: 0px 8px;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0px 0px 12px;
+}
+
 .userNameDisplayer {
     padding: 2px 8px;
-    position: absolute;
-    top: 13px;
-    right: 25px;
+    float: right;
+    width: 18%;
     color: white;
+    margin-top: 5px;
     font-weight: bold;
     border-radius: 4px;
     font-size: smaller;
-    text-shadow: 2px 2px 5px;
+    text-shadow: 2px 2px 5px black;
 }
 
-.userNameDisplayer:hover {
-    box-shadow: 0 0 5px 2px;
-    text-shadow: none;
-    
+.logDivOut {
+    color: #ffffff;
+    /* margin-right: 65px; */
+    /* margin-top: 6px; */
+    float: right;
+    vertical-align: middle;
+    cursor: pointer;
 }
 
 .log_Out {
@@ -71,4 +102,15 @@ body, h1, h2, h3, h4, h5, h6, p {
         border: 1px solid rgb(214, 170, 23);
         background-color: #ff9e0d;
         cursor: pointer;
+    }
+
+    .logOUT{
+        text-decoration: none;
+        padding: 2px 4px;
+        color: white;
+        border-radius: 18px;
+        width: 82px;
+        margin: -2px 4px;
+        display: inline-block;
+        text-align: center;
     }

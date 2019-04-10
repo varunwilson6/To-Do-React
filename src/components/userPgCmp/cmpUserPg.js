@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './UserPgCmp.css';
 import axios from 'axios';
 import DateViewCmp from './DateViewCmp/cmpDateView';
+import { withRouter } from 'react-router-dom'
 import TopAddCmp from './mainAddTaskCmp/addTask';
 import SvgContCmp from './cmpSvgCont/allClearMainSvg';
 import AllClrBaseCmp from './allClearBaseCmp/cmpAllClrBase';
@@ -136,10 +137,16 @@ class UserpageCmp extends Component {
     }
 
     componentDidMount () {
+        if(localStorage.getItem('signedMail')) {
         this.dataRetrivingHandler()
         this.setState({ // now the loading element will run 
             loading:true,
         })
+        } else {
+            this.props.history.push({
+                pathname: '/Signin',
+              })
+        }
     }
 
     render() {
@@ -165,5 +172,4 @@ class UserpageCmp extends Component {
 
 
 
-
-export {UserpageCmp};
+export default  withRouter(UserpageCmp);

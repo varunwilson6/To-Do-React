@@ -50,13 +50,39 @@ class Signup extends Component {
     }
     }
 
+    signUpValidation = (state) => {
+
+        console.log("signInValidation:",state)
+    
+          let smObj = {
+              email:state.signUp_Email,
+              password:state.signUp_IntPassword,
+              returnSecureToken: true,
+              fName:state.userFName,
+              lName:state.userLName,
+    
+          }
+          axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, smObj)
+          .then(response => {
+              console.log(response);
+              this.props.history.push({
+                pathname: '/signUpSuc',
+              })
+              if(response.status == 200) {
+                this.props.signupOk();
+              }
+              
+              this.props.userNmReg({...response})
+          }).catch(err => {console.log(err.response)})
+      }
+
     accountCreation = () => {
         let lc = this.state
         if(lc.CnfPasswordStatus&&lc.emailValid&&lc.userLName&&lc.userFName&&!this.state.mailUniqe){
         this.setState({
             loading:true,
         })
-        this.props.signUpValidation({
+        this.signUpValidation({
             ...this.state
         })
     }

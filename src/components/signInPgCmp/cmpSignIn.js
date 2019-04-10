@@ -18,6 +18,14 @@ class Signin extends Component {
         // this.props.signInValidation.bind(this);
     }
 
+    componentDidMount() {
+        if(localStorage.getItem('signedMail')) {
+            this.props.history.push({
+                pathname: '/Userpage'
+            })
+        }
+    }
+
     //statePass =()
     keyPressHandler = (event) => {
         if(event.which==13)this.signInValidation()
@@ -43,6 +51,9 @@ class Signin extends Component {
           localStorage.setItem('to-do-Page', 'UserPg');
           localStorage.setItem('signedMail',response.data.email);
           localStorage.setItem('authToken',response.data.idToken);
+          this.props.history.push({
+            pathname: '/Userpage',
+          })
 
         //   this.setState({
         //     whichpage:'UserPg',

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import './App.css';
 import Signin from '../signInPgCmp/cmpSignIn';
 import Signup from '../signUpCmp/cmpSignUp';
-import { UserpageCmp } from '../userPgCmp/cmpUserPg';
+import UserpageCmp from '../userPgCmp/cmpUserPg';
 import HeadCmp from '../headCmp/cmpHead';
 import AppHolderCmp from '../appHolderCmp/cmpAppCont';
 import UserCreated from '../packCmp/cmpPack';
@@ -71,6 +71,15 @@ class App extends Component {
     })
   }
 
+  signUpSucPageENtry = () => {
+    this.setState({
+      whichpage:'signUpSuc',
+      //lgnSucRes:response,
+    });
+  }
+
+  
+
   stateChange =() => {
     this.setState({
       signInPass:null
@@ -82,6 +91,8 @@ class App extends Component {
       signInPass:null
     })
   }
+
+
 
   userNameDisplayerHandler = (response) => {
     console.log(response);
@@ -111,47 +122,35 @@ class App extends Component {
             })
 }
 
-  signUpValidation = (state) => {
-
-    console.log("signInValidation:",state)
-
-      let smObj = {
-          email:state.signUp_Email,
-          password:state.signUp_IntPassword,
-          returnSecureToken: true,
-          fName:state.userFName,
-          lName:state.userLName,
-
-      }
-      axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, smObj)
-      .then(response => {
-          console.log(response);
-          if(response.status == 200) {
-            this.setState({
-              whichpage:'signUpSuc',
-              lgnSucRes:response,
-            });
-          }
-          this.userNameRegisterHandler(response) 
-      }).catch(err => {console.log(err.response)})
-  }
 
   render() {
     return (
       <BrowserRouter>
       <div className='container'>
         <HeadCmp UserName = {this.state.UserName} pageState={this.state.whichpage} activePage={this.activePage} />
-        <AppHolderCmp signedMail = {this.state.signedMail} >
-          {this.state.whichpage === 'SignIn' ? <Signin appStateRes={this.state.response} 
+        <AppHolderCmp>
+        <Switch>
+          <Route path = "/Signin" render = {(props) => <Signin {...props} 
+          appStateRes={this.state.response} 
           stateChange={this.stateChange} 
           signStatus={this.state.signInPass}
           userPageEntery = {this.userPageEntery}  
           signInValidation = {this.signInValidation} 
-          loginTrue = {this.loginTrue}/> : null}
-          {this.state.whichpage === 'SignUp' ? <Signup activePage={this.activePage} signUpValidation = {this.signUpValidation} /> : null}
-          {this.state.whichpage === 'UserPg' ? <UserpageCmp userNameDsp = {this.userNameDisplayerHandler} /> : null}
-          {this.state.whichpage === 'signUpSuc' ? <UserCreated/>:null}
-        </AppHolderCmp>
+          loginTrue = {this.loginTrue}/> } />
+
+          <Route path = "/Signup" render = {(props) => <Signup {...props}
+          activePage={this.activePage} 
+          userNmReg = {this.userNameRegisterHandler}
+          signupOk = {this.signUpSucPageENtry}
+          signUpValidation = {this.signUpValidation} /> } />
+          
+          <Route path = "/Userpage" render = {(props) => <UserpageCmp 
+            userNameDsp = {this.userNameDisplayerHandler} /> } />
+
+          <Route path = "/signUpSuc" render = {(props) =>  <UserCreated/> } />
+          <Redirect from = "/" to = "/Signin" />
+          </Switch>
+          </AppHolderCmp>
       </div>
       </BrowserRouter>
     );
