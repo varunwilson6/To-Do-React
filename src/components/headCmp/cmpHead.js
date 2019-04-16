@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import cmpLogo from './cmpLogo.svg';
 import './headCmp.css';
 import { NavLink } from 'react-router-dom'
+import { connect } from 'react-redux';
 
 
 // Header Component - for common head for all pages
@@ -25,7 +26,44 @@ class HeadCmp extends Component {
     activePageHandler = () => {
         localStorage.removeItem('signedMail');
         localStorage.removeItem('authToken');
-        this.props.activePage();
+        this.props.userNameRemoving();
+    }
+
+
+
+    searching =(event)=> {
+        let input, filter, ul, li, a, i, txtValue;
+        input = event.target.value
+        
+    
+            console.log(input)
+        filter = input.toUpperCase();
+        ul = document.getElementById("MyUl");
+        input = document.querySelectorAll('input[style]');
+        console.log("flter>>", filter,'<br>',
+        ul, li
+        )
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < input.length; i++) {
+        a = input[i];
+        txtValue = a.value
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            input[i].parentNode.style.display = "";
+        } else {
+            input[i].parentNode.style.display = "none";
+        }
+
+    }   
+    }
+
+
+
+
+    searchInputHandler = (event) => {
+        this.setState({
+            textAreaVal:event.target.value
+        })
     }
 
     render() {
@@ -39,7 +77,7 @@ class HeadCmp extends Component {
                         <div className = 'toDoHead'>My Todoist</div>
                     </div>
                    
-                    {this.props.pageState!=="UserPg"?
+                    {!this.props.getUserName&&!this.props.signHide?
                         <div className = "signup_signIn">
                         <NavLink className = 'signNav' to = {{
                             pathname: '/Signup',
@@ -51,22 +89,22 @@ class HeadCmp extends Component {
                             hash: '#submit',
                             search: '?quick-submit=true'
                         }} activeClassName="selected" > Signin </NavLink>
-                    </div>:null
+                    </div>:<React.Fragment>
+                    <div className='SearchContainer'>
+                    <div className='SearchEle'>
+                    <i className="fas fa-search"></i><textarea value = {this.state.textAreaVal} onKeyUp = {this.searching} onChange = {this.searchInputHandler} className = 'Searchtextarea' placeholder = 'Search your task here,...' 
+                        rows='1' type = 'textbox' />
+                    </div>
+                </div>
+                    <div className = "userNameDisplayer" >{this.props.getUserName}
+                        <div onClick ={this.over} className = "logDivOut">
+                            <NavLink title = "Logout" className = 'logOUT' to = {{pathname: '/Signin', }} onClick = {this.activePageHandler}>
+                             Log-Out <i className="fas fa-sign-out-alt"></i>
+                             </NavLink>
+                        </div>
+                    </div>
+                </React.Fragment>
                     }
-                        
-                        {this.props.UserName?
-                            <React.Fragment>
-                                <div className = "userNameDisplayer" >{this.props.UserName}
-                                    <div onClick ={this.over} className = "logDivOut">
-                                        <NavLink title = "Logout" className = 'logOUT' to = {{pathname: '/Signin', }} onClick = {this.activePageHandler}>
-                                         Log-Out <i className="fas fa-sign-out-alt"></i>
-                                         </NavLink>
-                                    </div>
-                                </div>
-                            </React.Fragment>:null
-                        } 
-
-                    
                     <div className = 'clear'></div>
                 </div>
             </div>
@@ -74,6 +112,21 @@ class HeadCmp extends Component {
     )
 }
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        userNameRemoving: () => dispatch({
+            type: 'USERNAME_REMOVING'
+        }),
+    }
+}
 
+const mapStateToProps = state => {
+    console.log("ss",state);
+  return {
+    getUserName:state.UserName,
+    getPageState:state.whichpage,
+    signHide:state.signHide,
+  };
+}
 
-export default HeadCmp;
+export default connect(mapStateToProps, mapDispatchToProps)(HeadCmp);

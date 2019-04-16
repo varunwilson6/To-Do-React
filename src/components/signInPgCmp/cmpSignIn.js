@@ -3,7 +3,7 @@ import './sign_inPage.css';
 import {ErrorCmp} from '../packCmp/cmpPack';
 import axios from 'axios';
 import loadingPic from './loadingPic.gif';
-
+import {connect} from 'react-redux';
 class Signin extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +11,6 @@ class Signin extends Component {
             signIn_Email: "",
             signIn_Password: null,
             emailValid:false,
-
             signStatus:this.props.signStatus,
             loading:false,
         }
@@ -21,7 +20,7 @@ class Signin extends Component {
     componentDidMount() {
         if(localStorage.getItem('signedMail')) {
             this.props.history.push({
-                pathname: '/Userpage'
+                pathname: '/Userpagessss',
             })
         }
     }
@@ -51,8 +50,9 @@ class Signin extends Component {
           localStorage.setItem('to-do-Page', 'UserPg');
           localStorage.setItem('signedMail',response.data.email);
           localStorage.setItem('authToken',response.data.idToken);
+        //   this.props.stateChanging();
           this.props.history.push({
-            pathname: '/Userpage',
+            pathname: '/Userpagessss',
           })
 
         //   this.setState({
@@ -60,12 +60,11 @@ class Signin extends Component {
         //     signedMail:response.data.email
         //   });
           
-          this.props.userPageEntery();
           // axios.post(`https://p1-to-do.firebaseio.com/to-do.json?auth=${response.data.idToken}&orderBy="email"&equalTo="${response.data.email}"`)
           //  .then(response => console.log(response)).catch(err => console.log("err in Rettive data"))
         }).catch(err => {
       
-          console.log(err.response)
+          console.log(err   )
           this.setState({
             signInPass:'Failed',
             loading:false
@@ -175,7 +174,15 @@ class Signin extends Component {
     }
 }
 
+// const mapDispatchToProps = dispatch => {
+  
+//     return {
+//        stateChanging: (UserName) => dispatch({
+//          type: 'USER_STATE_USERPAGE',
+//        })
+//     }
+//   }
 
-
+// export default connect(mapDispatchToProps)(Signin);
 export default Signin;
 

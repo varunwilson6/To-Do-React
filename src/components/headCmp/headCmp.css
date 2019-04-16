@@ -24,12 +24,37 @@ body, h1, h2, h3, h4, h5, h6, p {
     padding-top: 8px;
 }
 .svgCont {
-    width: 80%;
+    width: 12%;
     display: inline-block;
 }
 .svgEle {
     color:white;
 }
+
+.SearchContainer {
+    display: inline-block;
+    margin-left: 10%;
+}
+
+.Searchtextarea {
+width: 540px;
+border: none;
+outline: none;
+margin: 0px;
+/* height: 28px; */
+background: none;
+resize: none;
+vertical-align: text-bottom;
+}
+
+
+.SearchEle i {
+    padding: 0 5px 0 0;
+    border-right: 1px solid wheat;
+    margin: 0 5px 0 0;
+    color: wheat;
+}
+
 .toDoHead {
     display: inline-block;
     vertical-align: middle;
@@ -69,7 +94,7 @@ body, h1, h2, h3, h4, h5, h6, p {
 .userNameDisplayer {
     padding: 2px 8px;
     float: right;
-    width: 18%;
+    width: 20%;
     color: white;
     margin-top: 5px;
     font-weight: bold;
@@ -85,6 +110,7 @@ body, h1, h2, h3, h4, h5, h6, p {
     float: right;
     vertical-align: middle;
     cursor: pointer;
+    display: inline;
 }
 
 .log_Out {

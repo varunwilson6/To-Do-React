@@ -3,6 +3,7 @@ import axios from 'axios'
 import './sign_upPage.css'
 import {ErrorCmp , ValidEmail, InvalidPwd, PwdNotMatch} from '../packCmp/cmpPack'
 import loadingPic from './loadingPic.gif';
+import { connect } from 'react-redux';
 
 class Signup extends Component {
     constructor(props) {
@@ -20,8 +21,12 @@ class Signup extends Component {
         }
     }
 
-    userNameRegisterHandler = (response) => {
-        console.log(response)
+    componentDidMount() {
+        if(localStorage.getItem('signedMail')) {
+            this.props.history.push({
+                pathname: '/Userpage'
+            })
+        }
     }
 
     mailPreCheck=(event)=> {
@@ -68,11 +73,8 @@ class Signup extends Component {
               this.props.history.push({
                 pathname: '/signUpSuc',
               })
-              if(response.status == 200) {
-                this.props.signupOk();
-              }
-              
-              this.props.userNmReg({...response})
+            this.props.accountCreated();  
+            this.userNameRegisterHandler(response)
           }).catch(err => {console.log(err.response)})
       }
 
@@ -86,6 +88,24 @@ class Signup extends Component {
             ...this.state
         })
     }
+    }
+
+    userNameRegisterHandler = (response) => {
+        const decodingObjt = JSON.parse(response.config.data);
+        console.log(decodingObjt);
+        const authToken = response.data.idToken
+        const transObjct = {
+          fName:decodingObjt.fName,
+          lName:decodingObjt.lName,
+          userMail:response.data.email
+        }
+    
+        axios.post(`https://p1-to-do.firebaseio.com/users.json?auth=${authToken}`,transObjct )
+            .then(response => {
+            console.log(response);
+            }).catch(err => {
+                console.log(err)
+                })
     }
 
     mailTxt = () => {
@@ -161,11 +181,11 @@ class Signup extends Component {
                             <div id="account_icon">
                                 <i className="fas fa-user-alt"></i>
                             </div>
-                            <input type="text" name="f_name" placeholder="Enter your First name" onChange = {this.storingInputs}/>
+                            <input autoComplete = 'off' type="text" name="f_name" placeholder="Enter your First name" onChange = {this.storingInputs}/>
                             {this.state.userFName?false:<ErrorCmp innerText = "* This Field is Mandatory"/>}
                             </div>
                         <div id="l_name">
-                            <input placeholder="Enter your Last name" type="text" name="l_name" onChange = {this.storingInputs}/>
+                            <input autoComplete = 'off' placeholder="Enter your Last name" type="text" name="l_name" onChange = {this.storingInputs}/>
                             {this.state.userLName?false:<ErrorCmp innerText = "* This Field is Mandatory"/>}                        
                             </div>
                     </div>
@@ -194,11 +214,21 @@ class Signup extends Component {
             </div>
             <div id="sign_upLinkCont">
                 <a id="sign_Up_Link" onClick = {this.accountCreation}>Create My Account</a>
-                <span onClick = {this.props.activePage} id="cancel_span">I already have a account</span>
+                <span onClick = {() => this.props.history.push({
+                pathname: '/Userpagessss',
+            }) } id="cancel_span">I already have a account</span>
             </div>
         </div>
     )
 }
 }
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         accountCreated: (UserName) => dispatch({
+//           type: 'ROUTING_USERPAGE',
+//         })
+//      }
+//    }
 
 export default Signup;

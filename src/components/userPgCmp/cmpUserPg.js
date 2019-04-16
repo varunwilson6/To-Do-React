@@ -9,6 +9,7 @@ import AllClrBaseCmp from './allClearBaseCmp/cmpAllClrBase';
 import {LoadingCmp, MinLoading} from './LoadingComponents/cmpLoadings';
 import TaskAddingInputCmp from './input4Taskadd/cmpTaskAdding';
 import TskAdgCmp from './tasksContainingCmp/cmpTskAdgCmp';
+import {connect} from 'react-redux';
 // import Img from 'react-image';
 // import questionAllClear from './questionAllClear.svg';
 
@@ -33,9 +34,9 @@ class UserpageCmp extends Component {
         this.dataRetrivingHandler();
     }
 
-    tickerChecking = (checkboxTicked) => { // this will execute when checkbox is ticked, This fuction is passes as props to TskAdgCmp Component 
+    tickerChecking = (checkboxTicked) => { // this will execute when checkbox is ticked, 
         this.setState({
-            tickingLoading:true
+        tickingLoading:true
         })
         const taskObt = {...this.state.responseData};
         console.log(checkboxTicked);
@@ -49,21 +50,72 @@ class UserpageCmp extends Component {
             console.log(resp);
             this.deletionUpdation(deletingTaskKey)
         })
-
-        
     }
 
-    displayerHandler = (res) => {
-        this.props.userNameDsp(res)
+
+    userNameDisplayerHandler = (response) => {
+        console.log("Consoling This>>", this.props.userNameStoring)
+        console.log(response);
+        const keys = Object.keys(response.data);
+        const UserName = response.data[keys[0]].fName + " " + response.data[keys[0]].lName
+        console.log(UserName);
+        this.props.userNameStoring(UserName);
     }
+
 
     userDetailsRetriveHandler = (authToken, signedMailid) => {
         axios.get(`https://p1-to-do.firebaseio.com/users.json?auth=${authToken}&orderBy="userMail"&equalTo="${signedMailid}"`)
         .then( res => {
             console.log(res)
-            this. displayerHandler(res)
+            this.userNameDisplayerHandler(res) // username
+        }).catch(res => console.log(res.response))
+    }
+
+    localPushing = () => {
+        let keys = Object.keys(this.state.responseData)
+        let key = keys[this.props.appState.deletingId]
+        let updatingTask = this.props.appState.updatedTask
+        let localState = {...this.state.responseData}
+        let data = {...this.state.responseData[key]};
+        if(data.Task){
+        data.Task = updatingTask
+        localState[key].Task = data.Task
+        console.log(localState)
+        this.setState ({
+            responseData:localState
+        })
+        this.props.editingClear();
+    }
+    }
+
+    dataEditing = () => {
+        let authToken = localStorage.getItem('authToken');
+        let signedMailid = localStorage.getItem('signedMail');
+        let data = this.state.responseData
+        let keys = Object.keys(data)
+        let updatingTask = this.props.appState.updatedTask
+        let key = keys[this.props.appState.deletingId]
+        let sendObject = {
+            Task:updatingTask
+        }
+        this.localPushing()
+
+        console.log(key)
+        axios.patch(`https://p1-to-do.firebaseio.com/to-do/${key}.json?auth=${authToken}`,sendObject )
+        .then(response => {
+        console.log(response);
+
+        this.props.editingClear();
+
+        this.dataRetrivingHandler();
+        }).catch(err => {
+            this.setState({
+                tskAdgLoading:!this.state.tskAdgLoading, //mini loading state, For setting loading while adding a task
+            })
+            console.log(err.response)
         })
     }
+
 
     dataRetrivingHandler =()=> {
         
@@ -88,8 +140,17 @@ class UserpageCmp extends Component {
 
             let data = response.data 
             this.dataDecodingHandler(data)
-        }).catch((response)=> {
-            console.log(response)
+        }).catch((res)=> {
+            console.log(res)
+            console.log(res.response.statusText)
+            if (res.response.statusText === 'Unauthorized') {
+                localStorage.clear();
+                sessionStorage.clear();
+                this.props.history.push({
+                    pathname: '/Signin',
+                  })
+            }
+            
         })
     }
 
@@ -100,13 +161,15 @@ class UserpageCmp extends Component {
     }
 
     dateHandler =(state) => {
+        console.log(state)
         
         let datevl = state.dateValue
         console.log(datevl);
+        console.log(datevl.split("-")[1]-1);
         let day = datevl.split("-")[2],
-        month = datevl.split("-")[1],
-        year = datevl.split("-")[0]
-         var d = new Date ( year, month, day);
+        month = datevl.split("-")[1]-1,
+        year = datevl.split("-")[0];
+        let d = new Date ( year, month, day);
          return d.toDateString()
     }
 
@@ -138,6 +201,7 @@ class UserpageCmp extends Component {
 
     componentDidMount () {
         if(localStorage.getItem('signedMail')) {
+        this.props.signINSignUphidding();
         this.dataRetrivingHandler()
         this.setState({ // now the loading element will run 
             loading:true,
@@ -149,10 +213,20 @@ class UserpageCmp extends Component {
         }
     }
 
+    componentWillUnmount () {
+        this.props.signINSignUphidding()
+    }
+
+     componentDidUpdate () {
+        if(this.props.appState.updatedTask) {
+        this.dataEditing()
+    } 
+     }
+
     render() {
         return (
             <div>
-                <DateViewCmp dateData = {this.props.dateData} /> 
+                <DateViewCmp /> 
                 <TskAdgCmp 
                 data = {this.state.responseData}
                 tickerChecking = {this.tickerChecking}
@@ -170,6 +244,28 @@ class UserpageCmp extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        appState:state
+      };
+}
 
 
-export default  withRouter(UserpageCmp);
+
+const mapDispatchToProps = dispatch => {
+  
+    return {
+        userNameStoring: (UserName) => dispatch({
+         type: 'STORING_USERNAME',
+         value: UserName
+        }),
+        signINSignUphidding:(UserName) => dispatch({
+        type: 'SIGNIN_SIGNUP_HDN'
+        }),
+        editingClear:() => dispatch({
+            type: 'EDITING_CLEARING'
+        })
+    }    
+  }
+
+export default  connect(mapStateToProps, mapDispatchToProps)(withRouter(UserpageCmp));
