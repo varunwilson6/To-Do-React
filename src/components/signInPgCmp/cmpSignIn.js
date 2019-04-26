@@ -32,7 +32,8 @@ class Signin extends Component {
 
     signInValidation = (state) => {
         this.setState({
-            loading:true
+            loading:true,
+            
         })
         let Sendobject = {
           email:this.state.signIn_Email,
@@ -67,20 +68,34 @@ class Signin extends Component {
           console.log(err   )
           this.setState({
             signInPass:'Failed',
-            loading:false
+            loading:false,
+            showerror:true,
+            check:false,
           })
         });
       
         }
 
-    innerTxt =() => {
+    passwordinnerTxt =() => {
 
         let txt = null
         if(!this.state.signIn_Password) {
             txt = "* This Field is Mandatory" 
         } else if (this.state.signInPass==="Failed"&&!this.state.check) {
-            txt = "Password or E-Mail is wrong" } else if(this.state.check) txt = null       
+            txt = "Password or E-Mail is wrong" }     
             return txt;
+    }
+
+    mailinnerTxt = () => {
+        let txt = null;
+        {/* {this.state.signIn_Email?null:<ErrorCmp innerText = "* This Field is Mandatory"/>}{this.state.signIn_Email!=false?(!this.state.emailValid?<ErrorCmp innerText = "Enter a Valid E-Mail"/>:null):null} */}
+        if(!this.state.signIn_Email) {
+            txt = "* This Field is Mandatory"
+        }
+        else if (this.state.signIn_Email&&!this.state.emailValid) {
+            txt = "Enter a Valid E-Mail"
+        }
+        return txt;
     }
 
     storingInputs = (event) => {
@@ -151,25 +166,26 @@ class Signin extends Component {
                                 <div id="mailInputCont">
                                     <div><i className="fas fa-at"></i></div>
                                     <input onKeyPress={this.state.emailValid&&this.state.signIn_Password?this.keyPressHandler:null} type="text" name="email_SignIn" placeholder="Type your Mail-Id here,.." onChange={this.storingInputs} />
-                                    {this.state.signIn_Email?null:<ErrorCmp innerText = "* This Field is Mandatory"/>}{this.state.signIn_Email!=false?(!this.state.emailValid?<ErrorCmp innerText = "Enter a Valid E-Mail"/>:null):null}
+                                    {/* {this.state.signIn_Email?null:<ErrorCmp innerText = "* This Field is Mandatory"/>}{this.state.signIn_Email!=false?(!this.state.emailValid?<ErrorCmp innerText = "Enter a Valid E-Mail"/>:null):null} */}
+                                    {this.state.showerror?<ErrorCmp innerText = {this.mailinnerTxt()}/>:null}
                                 </div>
                                 <label className='passWordLabel' htmlFor="mailInput" >Enter your Password</label>
                                 <div id="pwdInputCont">
                                     <div><i className="fas fa-unlock-alt"></i></div>
                                     <input onKeyPress={this.state.emailValid&&this.state.signIn_Password?this.keyPressHandler:null} type="password" name="password_SignIn" placeholder="Type your password here" onChange={this.storingInputs} />
-                                    {<ErrorCmp innerText = {this.innerTxt()}/>}
+                                    {this.state.showerror?<ErrorCmp innerText = {this.passwordinnerTxt()}/>:null}
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div id="sign_inLinkCont">
                         <a 
-                        onClick={this.state.emailValid&&this.state.signIn_Password?this.signInValidation:null} 
+                        onClick={() => this.state.emailValid&&this.state.signIn_Password?this.signInValidation():this.setState({showerror:true}) && this.setstate({check:true})} 
                         id="sign_In_Link">Login</a>
                         <span id="forGotText">Forgot Password</span>
                     </div>
                 </div>
-            </div>
+            </div>  
         )
     }
 }

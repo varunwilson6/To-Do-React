@@ -18,6 +18,7 @@ class Signup extends Component {
             signUp_CnfPassword:null,
             CnfPasswordStatus:false,
             loading:false,
+            showError:false,
         }
     }
 
@@ -73,12 +74,15 @@ class Signup extends Component {
               this.props.history.push({
                 pathname: '/signUpSuc',
               })
-            this.props.accountCreated();  
+            // this.props.accountCreated();  
             this.userNameRegisterHandler(response)
           }).catch(err => {console.log(err.response)})
       }
 
     accountCreation = () => {
+        this.setState({
+            showError:true
+        })
         let lc = this.state
         if(lc.CnfPasswordStatus&&lc.emailValid&&lc.userLName&&lc.userFName&&!this.state.mailUniqe){
         this.setState({
@@ -99,6 +103,7 @@ class Signup extends Component {
           lName:decodingObjt.lName,
           userMail:response.data.email
         }
+        console.log(transObjct)
     
         axios.post(`https://p1-to-do.firebaseio.com/users.json?auth=${authToken}`,transObjct )
             .then(response => {
@@ -182,11 +187,13 @@ class Signup extends Component {
                                 <i className="fas fa-user-alt"></i>
                             </div>
                             <input autoComplete = 'off' type="text" name="f_name" placeholder="Enter your First name" onChange = {this.storingInputs}/>
-                            {this.state.userFName?false:<ErrorCmp innerText = "* This Field is Mandatory"/>}
+                            {this.state.userFName?null:
+                            (this.state.showError?<ErrorCmp innerText = "* This Field is Mandatory"/>:null)}
                             </div>
                         <div id="l_name">
                             <input autoComplete = 'off' placeholder="Enter your Last name" type="text" name="l_name" onChange = {this.storingInputs}/>
-                            {this.state.userLName?false:<ErrorCmp innerText = "* This Field is Mandatory"/>}                        
+                            {this.state.userLName?false:
+                                (this.state.showError?<ErrorCmp innerText = "* This Field is Mandatory"/>:null)}                        
                             </div>
                     </div>
                     <div id="mail_Div" className="formSub_div">
@@ -194,7 +201,7 @@ class Signup extends Component {
                             <i className="fas fa-at"></i>
                         </div>
                         <input name="email_inbx" placeholder="Enter your mail-Id" onChange = {this.storingInputs} onBlur = {this.mailPreCheck} />
-                        <ErrorCmp innerText = {this.mailTxt()}/>
+                        {this.state.showError?<ErrorCmp innerText = {this.mailTxt()}/>:false}
                         </div>
                     <div id="pwd_Div" className="formSub_div">
                         <div id="pwd_Intial">
@@ -202,11 +209,15 @@ class Signup extends Component {
                                 <i className="fas fa-key"></i>
                             </div>
                             <input type="password" name="Intial_pwd" placeholder="Enter your Password" onChange = {this.storingInputs}/>
-                            {this.state.signUp_IntPassword?false:<ErrorCmp innerText = "* This Field is Mandatory"/>}{this.state.signUp_IntPassword?(this.state.IntPasswordStatus?null:<ErrorCmp innerText = "Password should contain numbers and min 8 characters"/>):null}
+                            {this.state.signUp_IntPassword?false:
+                            (this.state.showError?<ErrorCmp innerText = "* This Field is Mandatory"/>:null)}{this.state.signUp_IntPassword?(this.state.IntPasswordStatus?null:<ErrorCmp innerText = "Password should contain numbers and min 8 characters"/>):null}
                             </div>
                         <div id="pwd_Confirm">
                             <input placeholder="Repeat your Password" type="password" name="confirm_pwd" onChange = {this.storingInputs}/>
-                            {this.state.signUp_CnfPassword?false:<ErrorCmp innerText = "* This Field is Mandatory"/>}{this.state.signUp_CnfPassword?(this.state.CnfPasswordStatus?null:<ErrorCmp innerText = "Password not matching"/>):null}
+                            {this.state.signUp_CnfPassword?false:
+                            (this.state.showError?<ErrorCmp innerText = "* This Field is Mandatory"/>:null)}
+                            {this.state.signUp_CnfPassword?(this.state.CnfPasswordStatus?null:
+                            <ErrorCmp innerText = "Password not matching"/>):null}
                             </div>
                         <div className="clear"></div>
                     </div>
