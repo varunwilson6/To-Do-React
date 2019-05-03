@@ -43,7 +43,6 @@ class Signin extends Component {
       
         axios.post(`https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCZqkm_qHoRtzn60E7hq4jCVgZFCVGIfQw`, Sendobject)
         .then(response => {
-          console.log(response);
           this.setState({
             loading:false
           })
@@ -100,7 +99,6 @@ class Signin extends Component {
 
     storingInputs = (event) => {
         let check,emailValid,signIn_Email,signIn_Password;
-       // console.log(this.props.signStatus)
         if(this.state.signInPass==="Failed"){
             check=true;
             this.props.stateChange();
@@ -139,7 +137,6 @@ class Signin extends Component {
                         check:check,
                     }
                 })
-            //this.setState({ signIn_Password: vlTarget.value })
         }
         
     }
@@ -190,15 +187,6 @@ class Signin extends Component {
     }
 }
 
-// const mapDispatchToProps = dispatch => {
-  
-//     return {
-//        stateChanging: (UserName) => dispatch({
-//          type: 'USER_STATE_USERPAGE',
-//        })
-//     }
-//   }
 
-// export default connect(mapDispatchToProps)(Signin);
 export default Signin;
 

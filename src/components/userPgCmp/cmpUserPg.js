@@ -30,7 +30,6 @@ class UserpageCmp extends Component {
     }
 
     deletionUpdation =(deletedKey) => {
-        console.log(deletedKey)
         this.dataRetrivingHandler();
     }
 
@@ -39,26 +38,26 @@ class UserpageCmp extends Component {
         tickingLoading:true
         })
         const taskObt = {...this.state.responseData};
-        console.log(checkboxTicked);
+        //console.log(checkboxTicked);
         const keys = Object.keys(taskObt)
         const deletingTaskKey = keys[checkboxTicked]
-        console.log(deletingTaskKey);
+        //console.log(deletingTaskKey);
         const authToken = localStorage.getItem('authToken')
 
         axios.delete(`https://p1-to-do.firebaseio.com/to-do/${deletingTaskKey}.json?auth=${authToken}`)
         .then(resp => {
-            console.log(resp);
+            //console.log(resp);
             this.deletionUpdation(deletingTaskKey)
         })
     }
 
 
     userNameDisplayerHandler = (response) => {
-        console.log("Consoling This>>", this.props.userNameStoring)
-        console.log(response);
+        //console.log("Consoling This>>", this.props.userNameStoring)
+        //console.log(response);
         const keys = Object.keys(response.data);
         const UserName = response.data[keys[0]].fName + " " + response.data[keys[0]].lName
-        console.log(UserName);
+        //console.log(UserName);
         this.props.userNameStoring(UserName);
     }
 
@@ -66,7 +65,7 @@ class UserpageCmp extends Component {
     userDetailsRetriveHandler = (authToken, signedMailid) => {
         axios.get(`https://p1-to-do.firebaseio.com/users.json?auth=${authToken}&orderBy="userMail"&equalTo="${signedMailid}"`)
         .then( res => {
-            console.log(res)
+            //console.log(res)
             this.userNameDisplayerHandler(res) // username
         }).catch(res => console.log(res.response))
     }
@@ -80,7 +79,7 @@ class UserpageCmp extends Component {
         if(data.Task){
         data.Task = updatingTask
         localState[key].Task = data.Task
-        console.log(localState)
+        //console.log(localState)
         this.setState ({
             responseData:localState
         })
@@ -100,10 +99,10 @@ class UserpageCmp extends Component {
         }
         this.localPushing()
 
-        console.log(key)
+        //console.log(key)
         axios.patch(`https://p1-to-do.firebaseio.com/to-do/${key}.json?auth=${authToken}`,sendObject )
         .then(response => {
-        console.log(response);
+        //console.log(response);
 
         this.props.editingClear();
 
@@ -112,7 +111,7 @@ class UserpageCmp extends Component {
             this.setState({
                 tskAdgLoading:!this.state.tskAdgLoading, //mini loading state, For setting loading while adding a task
             })
-            console.log(err.response)
+            //console.log(err.response)
         })
     }
 
@@ -141,8 +140,8 @@ class UserpageCmp extends Component {
             let data = response.data 
             this.dataDecodingHandler(data)
         }).catch((res)=> {
-            console.log(res)
-            console.log(res.response.statusText)
+            //console.log(res)
+            //console.log(res.response.statusText)
             if (res.response.statusText === 'Unauthorized') {
                 localStorage.clear();
                 sessionStorage.clear();
@@ -161,11 +160,11 @@ class UserpageCmp extends Component {
     }
 
     dateHandler =(state) => {
-        console.log(state)
+        //console.log(state)
         
         let datevl = state.dateValue
-        console.log(datevl);
-        console.log(datevl.split("-")[1]-1);
+        //console.log(datevl);
+        //console.log(datevl.split("-")[1]-1);
         let day = datevl.split("-")[2],
         month = datevl.split("-")[1]-1,
         year = datevl.split("-")[0];
@@ -189,7 +188,7 @@ class UserpageCmp extends Component {
 
         axios.post(`https://p1-to-do.firebaseio.com/to-do.json?auth=${authToken}`,sendObject )
         .then(response => {
-        console.log(response);
+        //console.log(response);
         this.dataRetrivingHandler();
         }).catch(err => {
             this.setState({

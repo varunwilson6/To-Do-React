@@ -7,7 +7,6 @@ const intialState = {
 }
 
 const reducer = (state = intialState, action)=> {
-    console.log(action.value)
     switch (action.type) {
         case 'STORING_USERNAME':
         // alert('str')

@@ -28,7 +28,6 @@ class TaskAddingInputCmp extends Component {
     }
 
     dateValueHandler = (event) => {
-        console.log(event.target.value)
         this.setState({
             dateValue:event.target.value,
         })

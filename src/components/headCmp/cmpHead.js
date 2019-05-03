@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import cmpLogo from './cmpLogo.svg';
 import './headCmp.css';
 import { NavLink } from 'react-router-dom'
@@ -7,42 +7,24 @@ import { connect } from 'react-redux';
 
 // Header Component - for common head for all pages
 
-class HeadCmp extends Component {
-    constructor(props) {
-        super(props);
-    
-    this.state = {
-        logout:false,    
-    }
+const HeadCmp =(props)=> {
 
-    }
-    over = () => {
-        this.setState({
-            logout:!this.state.logout
-        })
-    }
+    const [textAreaVal, textAreaValCh] = useState('');
 
-
-    activePageHandler = () => {
+    const activePageHandler = () => {
         localStorage.removeItem('signedMail');
         localStorage.removeItem('authToken');
-        this.props.userNameRemoving();
+        props.userNameRemoving();
     }
 
 
 
-    searching =(event)=> {
+    const searching =(event)=> {
         let input, filter, ul, li, a, i, txtValue;
-        input = event.target.value
-        
-    
-            console.log(input)
+        input = event.target.value;
         filter = input.toUpperCase();
         ul = document.getElementById("MyUl");
         input = document.querySelectorAll('input[style]');
-        console.log("flter>>", filter,'<br>',
-        ul, li
-        )
 
         // Loop through all list items, and hide those who don't match the search query
         for (i = 0; i < input.length; i++) {
@@ -57,16 +39,9 @@ class HeadCmp extends Component {
     }   
     }
 
-
-
-
-    searchInputHandler = (event) => {
-        this.setState({
-            textAreaVal:event.target.value
-        })
+    const searchInputHandler = (event) => {
+            textAreaValCh(event.target.value)
     }
-
-    render() {
 
     return (
         <div className='headCont'>
@@ -77,7 +52,7 @@ class HeadCmp extends Component {
                         <div className = 'toDoHead'>My Todoist</div>
                     </div>
                    
-                    {!this.props.getUserName&&!this.props.signHide?
+                    {!props.getUserName&&!props.signHide?
                         <div className = "signup_signIn">
                         <NavLink className = 'signNav' to = {{
                             pathname: '/Signup',
@@ -92,13 +67,13 @@ class HeadCmp extends Component {
                     </div>:<React.Fragment>
                     <div className='SearchContainer'>
                     <div className='SearchEle'>
-                    <i className="fas fa-search"></i><textarea value = {this.state.textAreaVal} onKeyUp = {this.searching} onChange = {this.searchInputHandler} className = 'Searchtextarea' placeholder = 'Search your task here,...' 
+                    <i className="fas fa-search"></i><textarea value = {textAreaVal} onKeyUp = {searching} onChange = {searchInputHandler} className = 'Searchtextarea' placeholder = 'Search your task here,...' 
                         rows='1' type = 'textbox' />
                     </div>
                 </div>
-                    <div className = "userNameDisplayer" >{this.props.getUserName}
-                        <div onClick ={this.over} className = "logDivOut">
-                            <NavLink title = "Logout" className = 'logOUT' to = {{pathname: '/Signin', }} onClick = {this.activePageHandler}>
+                    <div className = "userNameDisplayer" >{props.getUserName}
+                        <div className = "logDivOut">
+                            <NavLink title = "Logout" className = 'logOUT' to = {{pathname: '/Signin', }} onClick = {activePageHandler}>
                              Log-Out <i className="fas fa-sign-out-alt"></i>
                              </NavLink>
                         </div>
@@ -111,7 +86,7 @@ class HeadCmp extends Component {
         </div>
     )
 }
-}
+
 const mapDispatchToProps = dispatch => {
     return {
         userNameRemoving: () => dispatch({
@@ -121,7 +96,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
-    console.log("ss",state);
   return {
     getUserName:state.UserName,
     getPageState:state.whichpage,

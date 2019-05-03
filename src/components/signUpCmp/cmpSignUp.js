@@ -226,7 +226,9 @@ class Signup extends Component {
             <div id="sign_upLinkCont">
                 <a id="sign_Up_Link" onClick = {this.accountCreation}>Create My Account</a>
                 <span onClick = {() => this.props.history.push({
-                pathname: '/Userpagessss',
+                    pathname: '/Signin',
+                    hash: '#submit',
+                    search: '?quick-submit=true'
             }) } id="cancel_span">I already have a account</span>
             </div>
         </div>

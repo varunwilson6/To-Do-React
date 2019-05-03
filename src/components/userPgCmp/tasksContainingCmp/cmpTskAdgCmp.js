@@ -1,67 +1,45 @@
-import React, {Component} from 'react';
-import InputTxtCmp from './inputTextCmp'
+import React, {useState} from 'react';
+import InputTxtCmp from './inputTextCmp';
 
 
 
-class InputCmp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value:false
-        }
-    }
-    valueChanger = (event) => {
-        console.log(event.target.value)
-        this.setState({
-            value:!this.state.value
-        })
-    }
-
-    render() {
+const InputCmp =(props)=> {
+       const [value, valueCh] = useState(false) 
         return (
-            <input type = 'radio' checked = {this.state.value} onChange = {this.valueChanger} data_id = {this.props.data_id} onClick = {this.props.ticker}/>
+            <input type = 'radio' checked = {value} onChange = {()=>{valueCh(true)}} data_id = {props.data_id} onClick = {props.ticker}/>
         )
-    }
-    
 }
 
 
-
-
 //taskAdding Div Component - // here all the tasks are dumbing - for User Page
-class TskAdgCmp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            taskaddingInput:false,
-            valueId:"",
-            checkboxArray:""
+const TskAdgCmp =(props) => {
+
+            const [taskaddingInput, taskaddingIpChngr] = useState(false);
+            const [valueId, valueIdChngr] = useState("");
+            const [checkboxArray, checkboxArrayChngr ] = useState("");
           //  taskKeys:{...this.props.data}
-        }
-    }
+        
+    
 
-    ValueStore = (event) => {
+   const ValueStore = (event) => {
         let values = event.target.value
-        this.setState({
-            valueId:values
-        })
+        valueIdChngr(values)
     }
 
-    ticker = (event) => {
-        console.log(event.target.value)
+    const  ticker = (event) => {
         let checkboxTicked = event.target.getAttribute('data_Id')
-        this.props.tickerChecking(checkboxTicked)
+        props.tickerChecking(checkboxTicked)
     }
 
 
     //console.log(props)
-    dataDecode = (props) => {
+    const dataDecode = (props) => {
             if(props){
-            console.log(props)
+            // console.log(props)
             let keys = Object.keys(props)
             const RetrivedTasks =  keys.map((keys, indx)=>{
             return <li id = 'MyUl' className = 'TaskCont' key = {new Date()+Math.random()}>
-                <InputCmp data_id = {indx} ticker = {this.ticker}/>
+                <InputCmp data_id = {indx} ticker = {ticker}/>
                 <InputTxtCmp id = {"input" + indx} value = {props[keys].Task} />
                 <span className = 'taskDate'>Due Date - {props[keys].Date} </span>
                 <div className = 'clear'></div>
@@ -72,19 +50,17 @@ class TskAdgCmp extends Component {
         }
         }
     
-    render() {
     return (
         <div className = 'taskAdding'>
             <div className = 'allTasksCOnt'>
             <ul style={{listStyleType:'none'}}>
             {   
-                this.dataDecode(this.props.data)
+                dataDecode(props.data)
             }
             </ul>
             </div>
         </div>
     )
-}
 }
 
 export default TskAdgCmp;

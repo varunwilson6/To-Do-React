@@ -1,52 +1,39 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 
 
-class InputTxtCmp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            EditingTask: this.props.value
-        }
-    }
-    inPutHandler =(event) => {
+const InputTxtCmp = (props) =>  {
+
+    const [EditingTask, EditingTaskCh] = useState(props.value);
+    const [TaskDeletId, setTaskDeletId] = useState("");
+    const [intialValue, intialVChange] = useState(props.value);
+    
+
+    const inPutHandler =(event) => {
         event.persist()
         let value = event.target.value;
         let deleId = event.target.previousSibling.getAttribute('data_id');
        // console.log(deleId)
-        this.setState({
-            EditingTask:value,
-            TaskDeletId:deleId,
-        })
-
+       EditingTaskCh(value);
+       setTaskDeletId(deleId);
     }
 
-    eventChecking = (event) => {
+    const eventChecking = (event) => {
         event.persist()
-      //  console.log(event)
-        let EditingTask = this.state.EditingTask;
-        let TaskDeletId = this.state.TaskDeletId
-        if(event.which==13) {
-            this.props.editing(EditingTask,TaskDeletId)
-        }
+        if(intialValue !== EditingTask && event.type === "blur" || event.which==13){
+       // console.log(intialValue, EditingTask)
+            props.editing(EditingTask,TaskDeletId)
+    }
     }
 
-    eventChecking2 = () => {
-        let EditingTask = this.state.EditingTask;
-        let TaskDeletId = this.state.TaskDeletId
-        this.props.editing(EditingTask,TaskDeletId)
-    }
-
-        render() {
             return(
                 <input style = {{
                     border:'none', 
                     outline:'none',
                     width: '56%',
                     verticalAlign: 'text-top',
-                }} value = {this.state.EditingTask} onBlur={this.eventChecking2} onKeyUp = {this.eventChecking} onChange = {this.inPutHandler}></input>
+                }} value = {EditingTask} onBlur={eventChecking} onKeyDown = {eventChecking} onChange = {inPutHandler}></input>
             )
-        }
     
 }
 
