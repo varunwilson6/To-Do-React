@@ -1,5 +1,4 @@
 const intialState = {
-    whichpage: sessionStorage.getItem('to-do-Page')?sessionStorage.getItem('to-do-Page') : (localStorage.getItem('to-do-Page')?localStorage.getItem('to-do-Page'):'SignIn'),
     signIn_Email:null,
     signIn_Password:null,
     UserName:"",

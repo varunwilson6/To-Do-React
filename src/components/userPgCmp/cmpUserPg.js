@@ -159,10 +159,10 @@ class UserpageCmp extends Component {
         })
     }
 
-    dateHandler =(state) => {
-        //console.log(state)
+    dateHandler =(dateValue) => {
+        console.log(dateValue)
         
-        let datevl = state.dateValue
+        let datevl = dateValue
         //console.log(datevl);
         //console.log(datevl.split("-")[1]-1);
         let day = datevl.split("-")[2],
@@ -172,12 +172,12 @@ class UserpageCmp extends Component {
          return d.toDateString()
     }
 
-    taskSending = (state) => { //Here the task is sending to firebase
+    taskSending = (inValue, dateValue) => { //Here the task is sending to firebase
         this.setState({
             tskAdgLoading:true, //mini loading state, For setting loading while adding a task
         })
-        const value = state.inValue;
-        const Due_date = this.dateHandler(state);
+        const value = inValue;
+        const Due_date = this.dateHandler(dateValue);   
         const signedEmail = localStorage.getItem('signedMail');
         const authToken = localStorage.getItem('authToken');
         const sendObject = {

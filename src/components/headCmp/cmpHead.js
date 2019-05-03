@@ -67,7 +67,7 @@ const HeadCmp =(props)=> {
                     </div>:<React.Fragment>
                     <div className='SearchContainer'>
                     <div className='SearchEle'>
-                    <i className="fas fa-search"></i><textarea value = {textAreaVal} onKeyUp = {searching} onChange = {searchInputHandler} className = 'Searchtextarea' placeholder = 'Search your task here,...' 
+                    <i className="fas fa-search"></i><textarea value = {textAreaVal} onKeyUp = {searching} onChange = {searchInputHandler} className = 'Searchtextarea' placeholder = 'Quick Find' 
                         rows='1' type = 'textbox' />
                     </div>
                 </div>
